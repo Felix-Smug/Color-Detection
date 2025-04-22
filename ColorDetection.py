@@ -13,9 +13,11 @@ import re
 
 # using tutorial https://www.youtube.com/watch?v=lyoyTlltFVU&ab_channel=BroCode
 from tkinter import *
+from tkinter import simpledialog 
+from tkinter import messagebox
 
 window = Tk()
-window.geometry("680x320")
+window.geometry("400x400")
 window.title("Color Detection GUI")
 
 # photo image catsss
@@ -29,39 +31,49 @@ title = Label(window, text="Color Detection", font=("Roboto", 24, "bold"), bg="g
 title.pack(pady=24) #reposition title in the middle
 
 
-# Soon To Be Button Funtions (need to implement a back function)
-
-#1st Button
+#1st Button Function
 def enterHexID():
     
-    id = True
-    while id == True: 
-        idValue = input("Enter HEX ID: ")
+    #get user input and keep asking until user enter valid hex or cancel
+    while True: 
+
+        idValue = simpledialog.askstring("Enter HEX", "Enter HEX ID (ex. #FF0000):")
+
         validHex = re.fullmatch(r'#?[0-9A-Fa-f]{6}', idValue)
-        
-        if validHex == True:
-            id = False
+
+        if validHex:
+
+            if not idValue.startswith("#"):
+                idValue = "#" + idValue
+            
+
+            print(f"Valid Hex: {idValue}")
+            break
+
         else:
-            print("Enter Valid Hex Value")
+            messagebox.showerror("Invalid", "Enter Valid Hex Value")
 
 
-#2nd Button
+#2nd Button Function
 
-#3rd Button Exit
+#3rd Button Exit Function
 def endProgram():
     window.quit()
 
 
 
-#Buttons (1-3)
-button1 = Button(text="1. Enter Color ID (HEX)", font=("Roboto", 14), width=30)
+#Buttons (1-4)
+button1 = Button(text="1. Enter Color ID (HEX)", font=("Roboto", 14), width=30, command=enterHexID)
 button1.pack(pady=10)
 
 button2 = Button(text="2. Click a color on your screen", font=("Roboto", 14), width=30)
 button2.pack(pady=10)
 
-button3 = Button(text="3. Exit", font=("Roboto", 14), width=30, command=endProgram)
+button3 = Button(text="3. Run Suspiciously Good Aim", font=("Roboto", 14), width=30)
 button3.pack(pady=10)
+
+button4= Button(text="4. Exit", font=("Roboto", 14), width=30, command=endProgram)
+button4.pack(pady=10)
 
 
 
