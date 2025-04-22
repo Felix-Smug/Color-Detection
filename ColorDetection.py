@@ -11,10 +11,14 @@ import time
 import os
 import re
 
+# aim color will be used as a global variable
+aim_color = None
+
 # using tutorial https://www.youtube.com/watch?v=lyoyTlltFVU&ab_channel=BroCode
 from tkinter import *
 from tkinter import simpledialog 
 from tkinter import messagebox
+from tkinter import colorchooser
 
 window = Tk()
 window.geometry("400x400")
@@ -28,12 +32,14 @@ window.config(background="grey")
 
 # Main menu Title
 title = Label(window, text="Color Detection", font=("Roboto", 24, "bold"), bg="grey", fg="white")
-title.pack(pady=24) #reposition title in the middle
+title.pack(pady=24) #reposition title 
 
 
 #1st Button Function
 def enterHexID():
     
+    global aim_color 
+
     #get user input and keep asking until user enter valid hex or cancel
     while True: 
 
@@ -46,6 +52,7 @@ def enterHexID():
             if not idValue.startswith("#"):
                 idValue = "#" + idValue
             
+            aim_color = idValue
 
             print(f"Valid Hex: {idValue}")
             break
@@ -54,9 +61,37 @@ def enterHexID():
             messagebox.showerror("Invalid", "Enter Valid Hex Value")
 
 
-#2nd Button Function
+#2nd Button Function : https://www.youtube.com/watch?v=NDCirUTTrhg&ab_channel=Codemy.com
 
-#3rd Button Exit Function
+def color():
+
+    global aim_color 
+
+    chooseColor = colorchooser.askcolor()
+
+    if chooseColor[1] == None:
+        print("No Chosen Color")
+        return
+    
+    print(f"Color Chosen: {chooseColor}")
+    aim_color = chooseColor[1]
+
+
+#3rd button function takes the color input which will then use your cursor to aim at that color on your screen and left click
+def gaming_chair():
+
+    if aim_color is None:
+        messagebox.showerror("Warning", "No Color Was Selected")
+        return
+    
+    #aim bot cursor part 
+    '''
+    
+    soon idk im also experimenting with different ways to approach this problem (might scrap this and move on with better ideas in mind)
+
+    '''
+
+#4th Button Exit Function
 def endProgram():
     window.quit()
 
@@ -66,10 +101,10 @@ def endProgram():
 button1 = Button(text="1. Enter Color ID (HEX)", font=("Roboto", 14), width=30, command=enterHexID)
 button1.pack(pady=10)
 
-button2 = Button(text="2. Click a color on your screen", font=("Roboto", 14), width=30)
+button2 = Button(text="2. Pick a color", font=("Roboto", 14), width=30, command=color)
 button2.pack(pady=10)
 
-button3 = Button(text="3. Run Suspiciously Good Aim", font=("Roboto", 14), width=30)
+button3 = Button(text="3. Run Suspiciously Good Aim", font=("Roboto", 14), width=30, command=gaming_chair)
 button3.pack(pady=10)
 
 button4= Button(text="4. Exit", font=("Roboto", 14), width=30, command=endProgram)
