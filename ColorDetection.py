@@ -78,18 +78,13 @@ def color():
 
 
 #3rd button function takes the color input which will then use your cursor to aim at that color on your screen and left click
-def gaming_chair():
 
+def gaming_chair():
+    
     if aim_color is None:
         messagebox.showerror("Warning", "No Color Was Selected")
         return
-    
-    #aim bot cursor part 
-    '''
-    
-    soon idk im also experimenting with different ways to approach this problem (might scrap this and move on with better ideas in mind)
 
-    '''
 
 #4th Button Exit Function
 def endProgram():
