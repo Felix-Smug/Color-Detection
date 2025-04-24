@@ -77,9 +77,9 @@ def color():
     aim_color = chooseColor[1]
 
 
-#3rd button function takes the color input which will then use your cursor to aim at that color on your screen and left click
+#3rd button function
 
-def gaming_chair():
+def triggerbot():
     
     if aim_color is None:
         messagebox.showerror("Warning", "No Color Was Selected")
@@ -99,7 +99,7 @@ button1.pack(pady=10)
 button2 = Button(text="2. Pick a color", font=("Roboto", 14), width=30, command=color)
 button2.pack(pady=10)
 
-button3 = Button(text="3. Run Suspiciously Good Aim", font=("Roboto", 14), width=30, command=gaming_chair)
+button3 = Button(text="3. Run TriggerBot", font=("Roboto", 14), width=30, command=triggerbot)
 button3.pack(pady=10)
 
 button4= Button(text="4. Exit", font=("Roboto", 14), width=30, command=endProgram)

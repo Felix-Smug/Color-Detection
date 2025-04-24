@@ -1,2 +1,2 @@
 # Color-Detection
-Cursor moves to a chosen color and clicks on it
+Move your cursor on a color you selection and it will click it

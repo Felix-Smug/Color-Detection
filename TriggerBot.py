@@ -39,13 +39,13 @@ while keyboard.is_pressed('f') == False:
     #abs = absolute value number
     #example (245, 250, 5) is in range because each rgb value is withn 100 (can modify to make it more range)
 
-    red_match = abs(current_pixel[0] - target_color[0]) < 100   
-    green_match = abs(current_pixel[1] - target_color[1]) < 100 
-    blue_match = abs(current_pixel[2] - target_color[2]) < 100 
+    red_match = abs(current_pixel[0] - target_color[0]) < 70   
+    green_match = abs(current_pixel[1] - target_color[1]) < 70 
+    blue_match = abs(current_pixel[2] - target_color[2]) < 120 
     # if all the colors match then click 
     if red_match and green_match and blue_match:
         click(screen_x, screen_y)
-        time.sleep(0.05) 
+        time.sleep(click_delay) 
 
     time.sleep(click_delay)
     
