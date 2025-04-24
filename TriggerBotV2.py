@@ -21,9 +21,9 @@ import math
 #middle of screen: X: 960 and Y: 540
 screen_x = 960
 screen_y = 540
-target_color = (92, 255, 125)  #can change colors 
+target_color = (219, 219, 10)  #can change colors 
 click_delay = 0.01 #10 ms delay between clicking down/up
-radius = 20
+radius = 15
 
 def click(x,y):
     win32api.SetCursorPos((x,y))
