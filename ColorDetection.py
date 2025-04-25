@@ -93,6 +93,10 @@ def click():
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0,0)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,0,0)
 
+def keyshoot():
+    win32api.keybd_event(0x4B, 0, 0, 0)                   
+    win32api.keybd_event(0x4B, 0, win32con.KEYEVENTF_KEYUP, 0)
+
 def triggerbot():
     if aim_color is None:
         messagebox.showerror("Warning", "No Color Was Selected")
@@ -118,7 +122,7 @@ def triggerbot():
         button3.config(text="3. Run Color TriggerBot", state=NORMAL)
         return
 
-    status_label = Label(window, text="TriggerBot Active: Hold F to stop", font=("Roboto", 12), bg="grey", fg="white")
+    status_label = Label(window, text="TriggerBot Active: Hold P to stop", font=("Roboto", 12), bg="grey", fg="white")
     status_label.pack(pady=10)
     window.update()
 
@@ -136,7 +140,7 @@ def triggerbot():
     right, bottom = screen_x + radius, screen_y + radius
     region = (left, top, right, bottom)
 
-    while not keyboard.is_pressed('f'):
+    while not keyboard.is_pressed('p'):
         found_target = False
         try:
             frame = camera.grab(region=region)
@@ -154,7 +158,7 @@ def triggerbot():
                             
                             if red_match and green_match and blue_match:
                                 if click_ready[0]:
-                                    click()
+                                    keyshoot()
                                     threading.Thread(target=click_cooldown, daemon=True).start()
                                 found_target = True
                                 break
