@@ -15,6 +15,8 @@ import math
 import keyboard
 import random
 import threading
+import bettercam
+import numpy as np
 
 # using tutorial https://www.youtube.com/watch?v=lyoyTlltFVU&ab_channel=BroCode
 from tkinter import *
@@ -24,6 +26,9 @@ from tkinter import colorchooser
 
 # aim color will be used as a global variable
 aim_color = None
+
+# Initialize BetterCam
+camera = bettercam.create()
 
 window = Tk()
 window.geometry("400x400")
@@ -84,15 +89,11 @@ def color():
 
 #3rd button function
 
-def click(x,y):
-    click_delay = 0.01
-    win32api.SetCursorPos((x,y))
+def click():
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0,0)
-    time.sleep(click_delay)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,0,0)
 
 def triggerbot():
-    
     if aim_color is None:
         messagebox.showerror("Warning", "No Color Was Selected")
         return
@@ -100,13 +101,10 @@ def triggerbot():
     button3.config(text="Running... Hold F to stop", state=DISABLED)
     window.update()
 
-    #get user size of screen
-    screen_x, screen_y = pyautogui.size() 
-    screen_x, screen_y = screen_x // 2, screen_y // 2 
+    screen_x, screen_y = pyautogui.size()
+    screen_x, screen_y = screen_x // 2, screen_y // 2
     target_color = aim_color
-    click_delay = 0.01 #10 ms delay between clicking down/up
     
-    #prompt user to enter radius
     radius = simpledialog.askstring("Enter Radius", "Enter Radius Value (ex. 10 or 15):")
     
     if not radius:
@@ -124,47 +122,56 @@ def triggerbot():
     status_label.pack(pady=10)
     window.update()
 
-    def run_trigger():
-        while not keyboard.is_pressed('f'):
-            found_target = False
-            try:
+    # --- Cooldown logic here ---
+    delay = 0.2  # cooldown in seconds (adjust as needed)
+    click_ready = [True]
 
-                # check a smaller region on your screen
-                screenshot = pyautogui.screenshot(region=(screen_x - radius, screen_y - radius, radius*2, radius*2))
+    def click_cooldown():
+        click_ready[0] = False
+        time.sleep(delay)
+        click_ready[0] = True
+
+    # Region for BetterCam
+    left, top = screen_x - radius, screen_y - radius
+    right, bottom = screen_x + radius, screen_y + radius
+    region = (left, top, right, bottom)
+
+    while not keyboard.is_pressed('f'):
+        found_target = False
+        try:
+            frame = camera.grab(region=region)
+            
+            if frame is not None:
+                frame_np = np.array(frame).astype(np.int32)
                 
                 for x in range(0, radius*2):
-
                     for y in range(0, radius*2):
-
-                        # only check pixels within the radius
                         if math.sqrt((x - radius)**2 + (y - radius)**2) <= radius:
-                            current_pixel = screenshot.getpixel((x, y))
+                            current_pixel = frame_np[y, x]
                             red_match = abs(current_pixel[0] - target_color[0]) < 65  
                             green_match = abs(current_pixel[1] - target_color[1]) < 65
                             blue_match = abs(current_pixel[2] - target_color[2]) < 65
                             
                             if red_match and green_match and blue_match:
-                                click(screen_x, screen_y)
+                                if click_ready[0]:
+                                    click()
+                                    threading.Thread(target=click_cooldown, daemon=True).start()
                                 found_target = True
                                 break
-
                     if found_target:
                         break
-            except:
-                print("Error")
-            
-            time.sleep(0.01)  
-        
-        status_label.destroy()
-        button3.config(text="3. Run Color TriggerBot", state=NORMAL)
-        window.update()
+        except Exception as e:
+            print(f"Error: {e}")
+    
+    status_label.destroy()
+    button3.config(text="3. Run Color TriggerBot", state=NORMAL)
+    window.update()
 
-    threading.Thread(target=run_trigger, daemon=True).start()
+
 
 #4th Button Exit Function
 def endProgram():
     window.quit()
-
 
 
 #Buttons (1-4)
@@ -185,36 +192,3 @@ button4.pack(pady=10)
 
 
 window.mainloop()
-
-
-
-
-
-#original idea having the user input but I wanted a more interative experience
-'''
-def main():
-    
-    # Menu GUI 
-
-    while True:
-        print("\n")
-        print("1. Enter Color ID (HEX)")
-        print("2. Click a color on your screen")
-        print("3. Exit")
-
-        option = input("Option: ")
-        int(option)
-
-        if option == 1:
-            
-        elif option == 2:
-
-        elif option == 3:
-            break
-        else: 
-            print("Invalid Option (1-3)")
-
-
-main()
-
-'''
