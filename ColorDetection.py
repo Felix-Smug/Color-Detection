@@ -89,6 +89,8 @@ def color():
 
 #3rd button function
 
+#if playing a regular game change the call function to click
+#if playing valorant its recomended to change your shoot button to 'K'
 def click():
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0,0)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,0,0)
@@ -158,7 +160,7 @@ def triggerbot():
                             
                             if red_match and green_match and blue_match:
                                 if click_ready[0]:
-                                    keyshoot()
+                                    click()
                                     threading.Thread(target=click_cooldown, daemon=True).start()
                                 found_target = True
                                 break
