@@ -1,0 +1,6 @@
+pyautogui==0.9.54
+pywin32==306
+keyboard==0.13.5
+Pillow==10.0.0
+
+#use pip install -r requirements.txt
