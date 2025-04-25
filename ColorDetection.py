@@ -102,7 +102,7 @@ def triggerbot():
         messagebox.showerror("Warning", "No Color Was Selected")
         return
     
-    button3.config(text="Running... Hold F to stop", state=DISABLED)
+    button3.config(text="Running... Hold P to stop", state=DISABLED)
     window.update()
 
     screen_x, screen_y = pyautogui.size()
