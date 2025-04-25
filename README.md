@@ -1,2 +1,2 @@
 # Color-Detection
-Move your cursor on a color you selection and it will click it
+Select color and cursor will click the middle of your screen (Triggerbot)

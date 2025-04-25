@@ -17,13 +17,13 @@ import math
 #modified
 
 
-#color yellow on overwatch (enemy outline): (255,255,0)
+#color yellow on overwatch (enemy outline): (255,255,0) or use (219, 219, 10) for yellow
 #middle of screen: X: 960 and Y: 540
 screen_x = 960
 screen_y = 540
 target_color = (219, 219, 10)  #can change colors 
 click_delay = 0.01 #10 ms delay between clicking down/up
-radius = 15
+radius = 10
 
 def click(x,y):
     win32api.SetCursorPos((x,y))
@@ -33,11 +33,11 @@ def click(x,y):
 
 while keyboard.is_pressed('f') == False:
     print("TriggerBot Activated:\n")
-    print("Press F To Stop")
+    print("Hold F To Stop")
     
     found_target = False
     
-    # DEEPSEEKED THE MATH ON A CIRCLE
+    # CIRCLE AROUND THE CROSSHAIR
     for x in range(screen_x - radius, screen_x + radius + 1):
         
         for y in range(screen_y - radius, screen_y + radius + 1):
@@ -46,7 +46,7 @@ while keyboard.is_pressed('f') == False:
             if math.sqrt((x - screen_x)**2 + (y - screen_y)**2) <= radius:
                 try:
                     current_pixel = pyautogui.pixel(x, y)
-                    red_match = abs(current_pixel[0] - target_color[0]) < 65   
+                    red_match = abs(current_pixel[0] - target_color[0]) < 65  
                     green_match = abs(current_pixel[1] - target_color[1]) < 65
                     blue_match = abs(current_pixel[2] - target_color[2]) < 65
                     
