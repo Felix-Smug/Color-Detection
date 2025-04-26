@@ -124,13 +124,21 @@ def triggerbot():
         button3.config(text="3. Run Color TriggerBot", state=NORMAL)
         return
 
-    status_label = Label(window, text="TriggerBot Active: Hold P to stop", font=("Roboto", 12), bg="grey", fg="white")
+    status_label = Label(window, text="TriggerBot Active: Press C to toggle, Hold P to stop", 
+                        font=("Roboto", 12), bg="grey", fg="white")
     status_label.pack(pady=10)
+    
+    toggle_indicator = Label(window, text="Status: OFF", font=("Roboto", 12), 
+                           bg="grey", fg="red")
+    toggle_indicator.pack(pady=5)
+    
     window.update()
 
     # --- Cooldown logic here ---
     delay = 0.15  # cooldown in seconds (adjust as needed)
     click_ready = [True]
+    toggle_active = False  
+    last_c_state = False  
 
     def click_cooldown():
         click_ready[0] = False
@@ -143,33 +151,50 @@ def triggerbot():
     region = (left, top, right, bottom)
 
     while not keyboard.is_pressed('p'):
-        found_target = False
-        try:
-            frame = camera.grab(region=region)
+       
+        current_c_state = keyboard.is_pressed('c')
+        if current_c_state and not last_c_state:  
+            toggle_active = not toggle_active
             
-            if frame is not None:
-                frame_np = np.array(frame).astype(np.int32)
+            if toggle_active:
+                toggle_indicator.config(text="Status: ON", fg="green")
+            else:
+                toggle_indicator.config(text="Status: OFF", fg="red")
+            window.update()  
+            time.sleep(0.2)  
+        last_c_state = current_c_state
+
+        if toggle_active:
+            found_target = False
+            try:
+                frame = camera.grab(region=region)
                 
-                for x in range(0, radius*2):
-                    for y in range(0, radius*2):
-                        if math.sqrt((x - radius)**2 + (y - radius)**2) <= radius:
-                            current_pixel = frame_np[y, x]
-                            red_match = abs(current_pixel[0] - target_color[0]) < 65  
-                            green_match = abs(current_pixel[1] - target_color[1]) < 65
-                            blue_match = abs(current_pixel[2] - target_color[2]) < 65
-                            
-                            if red_match and green_match and blue_match:
-                                if click_ready[0]:
-                                    click()
-                                    threading.Thread(target=click_cooldown, daemon=True).start()
-                                found_target = True
-                                break
-                    if found_target:
-                        break
-        except Exception as e:
-            print(f"Error: {e}")
+                if frame is not None:
+                    frame_np = np.array(frame).astype(np.int32)
+                    
+                    for x in range(0, radius*2):
+                        for y in range(0, radius*2):
+                            if math.sqrt((x - radius)**2 + (y - radius)**2) <= radius:
+                                current_pixel = frame_np[y, x]
+                                red_match = abs(current_pixel[0] - target_color[0]) < 65  
+                                green_match = abs(current_pixel[1] - target_color[1]) < 65
+                                blue_match = abs(current_pixel[2] - target_color[2]) < 65
+                                
+                                if red_match and green_match and blue_match:
+                                    if click_ready[0]:
+                                        click()
+                                        threading.Thread(target=click_cooldown, daemon=True).start()
+                                    found_target = True
+                                    break
+                        if found_target:
+                            break
+            except Exception as e:
+                print(f"Error: {e}")
+
+        window.update() 
     
     status_label.destroy()
+    toggle_indicator.destroy()
     button3.config(text="3. Run Color TriggerBot", state=NORMAL)
     window.update()
 
