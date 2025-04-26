@@ -129,7 +129,7 @@ def triggerbot():
     window.update()
 
     # --- Cooldown logic here ---
-    delay = 0.2  # cooldown in seconds (adjust as needed)
+    delay = 0.15  # cooldown in seconds (adjust as needed)
     click_ready = [True]
 
     def click_cooldown():
