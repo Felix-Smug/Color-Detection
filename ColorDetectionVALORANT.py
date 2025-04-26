@@ -182,7 +182,7 @@ def triggerbot():
                                 
                                 if red_match and green_match and blue_match:
                                     if click_ready[0]:
-                                        click()
+                                        keyshoot()
                                         threading.Thread(target=click_cooldown, daemon=True).start()
                                     found_target = True
                                     break
