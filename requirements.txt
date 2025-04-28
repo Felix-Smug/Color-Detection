@@ -8,3 +8,11 @@ comtypes==1.4.10
 Pillow==10.0.0
 
 #use pip install -r requirements.txt
+
+# install it global
+#pip install pyautogui
+#pip install pywin32
+#pip install keyboard
+#pip install bettercam
+#pip install numpy
+#pip install opencv-python
