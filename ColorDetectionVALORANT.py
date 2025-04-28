@@ -176,9 +176,9 @@ def triggerbot():
                         for y in range(0, radius*2):
                             if math.sqrt((x - radius)**2 + (y - radius)**2) <= radius:
                                 current_pixel = frame_np[y, x]
-                                red_match = abs(current_pixel[0] - target_color[0]) < 50  
-                                green_match = abs(current_pixel[1] - target_color[1]) < 50
-                                blue_match = abs(current_pixel[2] - target_color[2]) < 50
+                                red_match = abs(current_pixel[0] - target_color[0]) < 60  
+                                green_match = abs(current_pixel[1] - target_color[1]) < 60
+                                blue_match = abs(current_pixel[2] - target_color[2]) < 60
                                 
                                 if red_match and green_match and blue_match:
                                     if click_ready[0]:
