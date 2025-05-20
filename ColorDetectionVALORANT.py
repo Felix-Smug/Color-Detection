@@ -17,12 +17,16 @@ import random
 import threading
 import bettercam
 import numpy as np
+import serial
 
 # using tutorial https://www.youtube.com/watch?v=lyoyTlltFVU&ab_channel=BroCode
 from tkinter import *
 from tkinter import simpledialog 
 from tkinter import messagebox
 from tkinter import colorchooser
+
+#arduino keyshoot method cuz previous method patched
+arduino = serial.Serial('COM5', 9600, timeout=1)
 
 # aim color will be used as a global variable
 aim_color = None
@@ -182,7 +186,8 @@ def triggerbot():
                                 
                                 if red_match and green_match and blue_match:
                                     if click_ready[0]:
-                                        keyshoot()
+                                        #fire key NEW METHOD
+                                        arduino.write(b'F')
                                         threading.Thread(target=click_cooldown, daemon=True).start()
                                     found_target = True
                                     break

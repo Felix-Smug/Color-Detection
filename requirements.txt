@@ -16,3 +16,4 @@ Pillow==10.0.0
 #pip install bettercam
 #pip install numpy
 #pip install opencv-python
+#pip install pyserial
