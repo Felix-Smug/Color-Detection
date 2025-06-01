@@ -187,7 +187,7 @@ def triggerbot():
                                 if red_match and green_match and blue_match:
                                     if click_ready[0]:
                                         #fire key NEW METHOD
-                                        arduino.write(b'F')
+                                        arduino.write(b'FIRE\n')
                                         threading.Thread(target=click_cooldown, daemon=True).start()
                                     found_target = True
                                     break
